@@ -1,0 +1,77 @@
+[{
+  "_id": {
+    "$oid": "653165608fac4f9639a44557"
+  },
+  "nota": 4,
+  "classificacao": "Detrator"
+},
+{
+  "_id": {
+    "$oid": "653165608fac4f9639a4455b"
+  },
+  "nota": 8,
+  "classificacao": "Neutro"
+},
+{
+  "_id": {
+    "$oid": "653165608fac4f9639a44553"
+  },
+  "nota": 0,
+  "classificacao": "Detrator"
+},
+{
+  "_id": {
+    "$oid": "653165608fac4f9639a44555"
+  },
+  "nota": 2,
+  "classificacao": "Detrator"
+},
+{
+  "_id": {
+    "$oid": "653165608fac4f9639a44554"
+  },
+  "nota": 1,
+  "classificacao": "Detrator"
+},
+{
+  "_id": {
+    "$oid": "653165608fac4f9639a44558"
+  },
+  "nota": 5,
+  "classificacao": "Detrator"
+},
+{
+  "_id": {
+    "$oid": "653165608fac4f9639a44559"
+  },
+  "nota": 6,
+  "classificacao": "Detrator"
+},
+{
+  "_id": {
+    "$oid": "653165608fac4f9639a44556"
+  },
+  "nota": 3,
+  "classificacao": "Detrator"
+},
+{
+  "_id": {
+    "$oid": "653165608fac4f9639a4455a"
+  },
+  "nota": 7,
+  "classificacao": "Neutro"
+},
+{
+  "_id": {
+    "$oid": "653165608fac4f9639a4455d"
+  },
+  "nota": 10,
+  "classificacao": "Promotor"
+},
+{
+  "_id": {
+    "$oid": "653165608fac4f9639a4455c"
+  },
+  "nota": 9,
+  "classificacao": "Promotor"
+}]
