@@ -3,7 +3,7 @@ from pymongo.server_api import ServerApi
 import datetime
 import time
 
-class MongoDBAtlas(object):
+class MongoDB(object):
 
     def __init__(self):
         ...
@@ -14,10 +14,12 @@ class MongoDBAtlas(object):
         # Send a ping to confirm a successful connection
         try:
             client.admin.command('ping')
-            print("Pinged your deployment. You successfully connected to MongoDB!")
             print("\n")
+            print("You successfully connected to MongoDB!")
+
             return client                       
         except Exception as e:
+            print("\n")
             print(e)
             return None                    
 
@@ -60,7 +62,7 @@ class MongoDBAtlas(object):
         print(f"Tempo de busca na colleção: {round(FindOnCollectionEnd - FindOnCollectionStart,3)} segundos")
         print("\n")
 
-    def Question1(self, collection, empresa, linha, datahora)->None:
+    def Question1(self, collection, empresa, linha, datahora)->float:
         print("<<< Questão 1 >>> Qual é a localização do transporte de interesse em tempo real?")
         d = datetime.datetime.strptime(datahora, "%Y-%m-%dT%H:%M:%S.%fZ")
         Question1Start = time.time()
@@ -73,10 +75,12 @@ class MongoDBAtlas(object):
         else:
             print("No documents found.")
         Question1End = time.time()
-        print(f"Tempo da Questão 1: {round(Question1End - Question1Start,3)} segundos")
-        print("\n")            
+        timeDif = round(Question1End - Question1Start,3)
+        print(f"Tempo da Questão 1: {timeDif} segundos")
+        print("\n")
+        return timeDif            
 
-    def Question2(self, collection)->None:
+    def Question2(self, collection)->float:
         print("<<< Questão 2 >>> Qual linha teve sua localização mais compartilhada?")
         Question2Start = time.time()
         result_cursor = collection.aggregate([{"$group":{"_id":"$linha","count":{"$sum":1}}},{"$sort":{"count":-1}},{"$limit":1}])
@@ -87,10 +91,12 @@ class MongoDBAtlas(object):
         else:
             print("No documents found.")
         Question2End = time.time()
-        print(f"Tempo da Questão 2: {round(Question2End - Question2Start,2)} segundos")
+        timeDif = round(Question2End - Question2Start,2)
+        print(f"Tempo da Questão 2: {timeDif} segundos")
         print("\n")
+        return timeDif
     
-    def Question3(self, collection)->None:
+    def Question3(self, collection)->float:
         print("<<< Questão 3 >>> Qual empresa teve a localização de seus ônibus mais compartilhada?")
         Question3Start = time.time()
         result_cursor = collection.aggregate([{"$group":{"_id":"$empresa","count":{"$sum":1}}},{"$sort":{"count":-1}},{"$limit":1}])
@@ -101,10 +107,12 @@ class MongoDBAtlas(object):
         else:
             print("No documents found.")
         Question3End = time.time()
-        print(f"Tempo da Questão 3: {round(Question3End - Question3Start,3)} segundos")
+        timeDif = round(Question3End - Question3Start,3)
+        print(f"Tempo da Questão 3: {timeDif} segundos")
         print("\n")
+        return timeDif
     
-    def Question4(self, collection)->None:
+    def Question4(self, collection)->float:
         print("<<< Questão 4 >>> Qual horário concentrou o maior volume de compartilhamentos?")
         Question4Start = time.time()
         result_cursor = collection.aggregate([{"$project":{"hour":{"$hour":"$datahora"}}},{"$group":{"_id":"$hour","count":{"$sum":1}}},{"$sort":{"count":-1}},{"$limit":1}])
@@ -115,10 +123,12 @@ class MongoDBAtlas(object):
         else:
             print("No documents found.")
         Question4End = time.time()
-        print(f"Tempo da Questão 4: {round(Question4End - Question4Start,3)} segundos")
+        timeDif = round(Question4End - Question4Start,3)
+        print(f"Tempo da Questão 4: {timeDif} segundos")
         print("\n")
+        return timeDif
     
-    def Question5(self, collection)->None:
+    def Question5(self, collection)->float:
         print("<<< Questão 5 >>> Qual empresa obteve o maior total de pontos na pesquisa de satisfação de seus clientes?")
         Question5Start = time.time()
         result_cursor = collection.aggregate([{"$group":{"_id":"$empresa","totalNota":{"$sum":"$nota"}}},{"$sort":{"totalNota":-1}},{"$limit":1}])
@@ -129,5 +139,29 @@ class MongoDBAtlas(object):
         else:
             print("No documents found.")
         Question5End = time.time()
-        print(f"Tempo da Questão 5: {round(Question5End - Question5Start,3)} segundos")
+        timeDif = round(Question5End - Question5Start,3)
+        print(f"Tempo da Questão 5: {timeDif} segundos")
         print("\n")
+        return timeDif
+    
+    def ConsultasMongoDB(self, clientMongo, taskMongo, flagMongo)->None:
+        print("\n")
+        print("##################################################")
+        print(f"##### Consultas utilizando o MongoDB - {flagMongo} #####")
+        print("##################################################")
+        print("\n")    
+        if clientMongo is not None:
+            collectionLocalizacaoTransporte = taskMongo.GetCollectionFromDB(clientMongo, "LocalizacaoTransporte")
+            # taskMongo.FindOnCollection(collectionLocalizacaoTransporte)
+            collectionPesquisaSatisfacaoCliente = taskMongo.GetCollectionFromDB(clientMongo, "PesquisaSatisfacaoCliente")
+            # taskMongo.FindOnCollection(collectionPesquisaSatisfacaoCliente,True)
+            timeDifQuestion1Mongo = taskMongo.Question1(collectionLocalizacaoTransporte, "Viação Bonança", "São Vicente / Bandeirantes", "2023-10-18T01:39:37.316Z")
+            timeDifQuestion2Mongo = taskMongo.Question2(collectionLocalizacaoTransporte)
+            timeDifQuestion3Mongo = taskMongo.Question3(collectionLocalizacaoTransporte)
+            timeDifQuestion4Mongo = taskMongo.Question4(collectionLocalizacaoTransporte)
+            timeDifQuestion5Mongo = taskMongo.Question5(collectionPesquisaSatisfacaoCliente)
+            totalTimeMongo = timeDifQuestion1Mongo + timeDifQuestion2Mongo + timeDifQuestion3Mongo + timeDifQuestion4Mongo + timeDifQuestion5Mongo
+            print(f"Tempo total com MongoDB: {round(totalTimeMongo,3)} segundos")
+            print("\n") 
+        else:
+            print("Client do MongoDB não foi instanciado")
