@@ -6,7 +6,9 @@ if __name__ == '__main__':
     config = dotenv_values(".env")
     
     # Consultas utilizando o MongoDB Atlas
+    print("\n")
     print("Consultas utilizando o MongoDB Atlas")
+    print("\n")
     taskMongo = MongoDBAtlas()
     clientMongo = taskMongo.CreateMongoClient(config['URI'])
     if clientMongo is not None:
@@ -22,19 +24,17 @@ if __name__ == '__main__':
     else:
         print("Client do MongoDB Atlas não foi instanciado")
     
-    # Consultas utilizando o MySQL DB4Free <<<<< AJUSTAR PARA AS TABELAS NO LUGAR DAS COLLECTIONS >>>>>  
+    # Consultas utilizando o MySQL DB4Free
+    print("\n")
     print("Consultas utilizando o MySQL DB4Free")
+    print("\n")
     taskMySQL = MySQLDB4Free()
-    clientMySQL = taskMySQL.CreateMySQLClient(config['URI'])
+    clientMySQL = taskMySQL.CreateMySQLClient(config['HOST'], config['PORT'], config['USER'], config['PASSWORD'], config['BD'])
     if clientMySQL is not None:
-        collectionLocalizacaoTransporte = taskMySQL.GetCollectionFromDB(clientMySQL, "LocalizacaoTransporte")
-        # taskMySQL.FindOnCollection(collectionLocalizacaoTransporte)
-        collectionPesquisaSatisfacaoCliente = taskMySQL.GetCollectionFromDB(clientMySQL, "PesquisaSatisfacaoCliente")
-        # taskMySQL.FindOnCollection(collectionPesquisaSatisfacaoCliente,True)
-        taskMySQL.Question1(collectionLocalizacaoTransporte, "Viação Bonança", "São Vicente / Bandeirantes", "2023-10-18T01:39:37.316Z")
-        taskMySQL.Question2(collectionLocalizacaoTransporte)
-        taskMySQL.Question3(collectionLocalizacaoTransporte)
-        taskMySQL.Question4(collectionLocalizacaoTransporte)
-        taskMySQL.Question5(collectionPesquisaSatisfacaoCliente)
+        taskMySQL.Question1(clientMySQL, "Viação Bonança", "São Vicente / Bandeirantes", "2023-10-18T01:39:37.316Z")
+        taskMySQL.Question2(clientMySQL)
+        taskMySQL.Question3(clientMySQL)
+        taskMySQL.Question4(clientMySQL)
+        taskMySQL.Question5(clientMySQL)
     else:
         print("Client do MySQLDB4Free não foi instanciado")
