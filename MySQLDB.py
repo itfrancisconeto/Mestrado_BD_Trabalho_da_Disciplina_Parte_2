@@ -1,5 +1,4 @@
-import mysql
-import mysql.connector
+import pymysql
 import datetime
 import time
 
@@ -8,18 +7,18 @@ class MySQLDB(object):
     def __init__(self):
         ...
     
-    def CreateMySQLClient(self, _host, _port, _user, _password, _bd)->mysql:
+    def CreateMySQLClient(self, _host, _user, _password, _bd)->pymysql:
         # Create a new client and connect to the server
-        client = mysql.connector.connect(
+        client = pymysql.connect(
             host=_host,
-            port=_port,
             user=_user,
             password=_password,
-            database=_bd
+            database=_bd,
+            charset="utf8"
             )        
         # Send a ping to confirm a successful connection
         try:
-            if (client.is_connected()):
+            if (client.open):
                 print("You successfully connected to MySQL!")
             else:
                 print("Not connected to MySQL")
