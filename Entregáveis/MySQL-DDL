@@ -1,0 +1,42 @@
+CREATE TABLE Posicao 
+( 
+ IdPosicao INT PRIMARY KEY AUTO_INCREMENT,  
+ Latitude LONG,  
+ Longitude LONG,  
+ DataHora TIMESTAMP,  
+ IdEmpresa INT,     
+ IdLinha INT  
+);
+ 
+CREATE TABLE ClassificacaoNPS 
+( 
+ IdClassificacao INT PRIMARY KEY AUTO_INCREMENT,  
+ Nota INT,  
+ Classificacao VARCHAR(10)  
+);
+ 
+CREATE TABLE PesquisaSatisfacao 
+(  
+ IdPesquisa INT PRIMARY KEY AUTO_INCREMENT,
+ DataHora TIMESTAMP,
+ IdEmpresa INT, 
+ IdLinha INT,
+ Nota INT  
+);
+ 
+CREATE TABLE Empresa 
+( 
+ IdEmpresa INT PRIMARY KEY,  
+ Nome VARCHAR(40) 
+);
+ 
+CREATE TABLE Linha 
+( 
+ IdLinha INT PRIMARY KEY,  
+ Nome VARCHAR(50)  
+);
+ 
+ALTER TABLE Posicao ADD FOREIGN KEY(IdEmpresa) REFERENCES Empresa (IdEmpresa);
+ALTER TABLE Posicao ADD FOREIGN KEY(IdLinha) REFERENCES Linha (IdLinha);
+ALTER TABLE PesquisaSatisfacao ADD FOREIGN KEY(IdEmpresa) REFERENCES Empresa (IdEmpresa);
+ALTER TABLE PesquisaSatisfacao ADD FOREIGN KEY(IdLinha) REFERENCES Linha (IdLinha);
